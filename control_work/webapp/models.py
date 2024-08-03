@@ -15,7 +15,7 @@ class Product(models.Model):
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Описание')
     image = models.ImageField(upload_to='products', blank=True, null=True, verbose_name='Картинка')
 
-    def __repr__(self):
+    def __str__(self):
         return self.name
     
 
@@ -34,5 +34,5 @@ class Review(models.Model):
         ]
     )
 
-    def __repr__(self) -> str:
+    def __str__(self):
         return f'Отзыв от {self.author.username} для {self.product.name}'
