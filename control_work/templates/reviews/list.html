@@ -1,0 +1,24 @@
+
+
+{% for review in reviews %}
+    <div class="card w-100 my-2">
+        <div class="card-header d-flex justify-content-between">
+        <div><strong>Оценка:</strong> {{ review.rating }}</div>
+        <div class="d-flex">
+        <a class="btn btn-warning mx-2" href="{% url 'reviews_update' id=review.id product_id=product.id %}">Редактировать</a>
+        <form action="{% url 'reviews_delete' product_id=product.id id=review.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger">Удалить</button>
+        </form>
+        </div>
+        </div>
+        <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p><strong>Комментарии: </strong>{{ review.feedback }}</p>
+            <footer class="blockquote-footer"><strong><a href="{% url 'profile' id=review.author.id %}">{{ review.author.username }}</a> <br> {{ review.author.email }}</strong></footer>
+        </blockquote>
+        </div>
+    </div>
+    {% empty %}
+    <p><strong>Отзывов нет.</strong></p>
+    {% endfor %}
