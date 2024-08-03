@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="row">
+    {% for product in products %}
+    
+    <div class="card col-4 my-2 ms-1" style="width: 18rem;">
+      {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top" width="200" height="300" alt="Товар">
+      {% else %}
+          <img src="{% static 'img/product_default.png' %}" class="card-img-top" width="200" height="300"  alt="Товар">
+      {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <a href="{% url 'products_detail' id=product.id %}" class="btn btn-primary">Подробнее</a>
+        </div>
+    </div>
+
+    {% endfor %}
+    </div>
+{% endblock %}

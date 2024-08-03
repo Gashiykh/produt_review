@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center">
+    <div class="col">
+        <div class="card mt-3">
+            <div class="row g-0">
+                <div class="col-4">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" width="200" height="300" alt="Товар">
+                {% else %}
+                    <img src="{% static 'img/product_default.png' %}" class="card-img-top" width="200" height="300"  alt="Товар">
+                {% endif %}
+                </div>
+                <div class="col-8">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Название: {{ product.name }}</h5>
+                        <p class="card-text"><strong>Категория: {{ product.category }}</strong></p>
+                        <p class="card-text"><strong>Описание: <br>{{ product.description|default:'Описание отсутствует' }}</strong></p>
+                    </div>
+                    <div class="text-center">
+                        <form action="{% url 'products_update' id=product.id %}" method="get" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <button class="btn btn-success">Редактировать</button>
+                        </form>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                    <a class="btn btn-primary" href="{% url 'products' %}">Назад</a>
+                    <form action="{% url 'products_delete' id=product.id %}" method="post" onsubmit="return confirm('Удалить?')">
+                        {% csrf_token %}
+                        <button class="btn btn-danger">Удалить</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container text-center">
+
+        <h1 class="text-center">Отзывы</h1>
+        {% if user.is_authenticated %}
+            {% url 'reviews_add' product_id=product.id as product_action_url %}
+            {% include 'partial/form.html' with request_method='post' form=review_form action_url=product_action_url %}
+        {% endif %}
+        {% include 'reviews/list.html' %}
+    </div>
+{% endblock %}
